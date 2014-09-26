@@ -125,6 +125,10 @@
           left: -20px;
         }
 
+      .kineticjs-content {
+        border: 1px solid red;
+      }
+
     </style>
     <script type="text/javascript">
 
@@ -293,8 +297,17 @@
       <div name="healthtext" class="healthtext"></div>
     </div>
 
+    <div id="user_car">
+      <div id="user_car_container"></div>
+
+      <input type="text" id="user_car_json"></input>
+      <button id="serialize_user_car">Serialize</button>
+      <button id="deserialize_user_car">Deserialize</button>
+    </div>
+
     <script src="lib/seedrandom.js"></script>
     <script src="lib/box2d.js"></script>
+    <script src="lib/kinetic-v5.1.0.js"></script>
     <script src="ghost.js"></script>
     <script src="path.js"></script>
     <script src="cawro.js"></script>
