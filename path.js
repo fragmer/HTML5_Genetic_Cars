@@ -16,7 +16,8 @@ function cw_createFloor() {
 
     // when approaching the upper or lower edge of the minimap (h=35 or -35),
     // bias the angle by 5% to lean towards h=0, to avoid the terrain going off-screen
-    angle += (tile_position.y/35)/20;
+    var angle_bias = (tile_position.y/35);
+    angle -= angle_bias*angle_bias*sign(angle_bias)/20;
 
     last_tile = cw_createFloorTile(tile_position, angle);
     cw_floorTiles.push(last_tile);
@@ -26,10 +27,17 @@ function cw_createFloor() {
   }
 }
 
+function sign(x) {
+  x = +x // convert to a number
+  if (x === 0 || isNaN(x))
+    return x
+  return x > 0 ? 1 : -1
+}
+
 
 function cw_createFloorTile(position, angle) {
   // Cap the angle to +/-(PI/2) to avoid impossible slopes
-  angle = Math.max(Math.min(angle, Math.PI/2), -Math.PI/2);
+  angle = Math.max(Math.min(angle, 1.5), -Math.PI/2);
   body_def = new b2BodyDef();
 
   body_def.position.Set(position.x, position.y);
