@@ -56,7 +56,7 @@ var zoom = 70;
 
 var mutable_floor = false;
 
-var maxFloorTiles = 200;
+var maxFloorTiles = 250;
 var cw_floorTiles = new Array();
 var last_drawn_tile = 0;
 
