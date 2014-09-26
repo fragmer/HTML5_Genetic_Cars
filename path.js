@@ -9,7 +9,7 @@ function cw_createFloor() {
 
   // keep old impossible tracks if not using mutable floors
   // if path is mutable over races, create smoother tracks
-  var roughness = (mutable_floor ? 1.2 : 1.5);
+  var roughness = (mutable_floor ? 1.38 : 1.725);
 
   for(var k = 0; k < maxFloorTiles; k++) {
     var angle = (Math.random()*3 - 1.5) * roughness*k/maxFloorTiles;
@@ -37,7 +37,7 @@ function sign(x) {
 
 function cw_createFloorTile(position, angle) {
   // Cap the angle to +/-(PI/2) to avoid impossible slopes
-  angle = Math.max(Math.min(angle, 1.5), -Math.PI/2);
+  angle = Math.max(Math.min(angle, 1.471), -Math.PI/2);
   body_def = new b2BodyDef();
 
   body_def.position.Set(position.x, position.y);
