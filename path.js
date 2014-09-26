@@ -6,14 +6,19 @@ function cw_createFloor() {
   var tile_position = new b2Vec2(-5,0);
   cw_floorTiles = new Array();
   Math.seedrandom(floorseed);
+
+  // keep old impossible tracks if not using mutable floors
+  // if path is mutable over races, create smoother tracks
+  var roughness = (mutable_floor ? 1.2 : 1.5);
+
   for(var k = 0; k < maxFloorTiles; k++) {
-    if (!mutable_floor) {
-      // keep old impossible tracks if not using mutable floors
-      last_tile = cw_createFloorTile(tile_position, (Math.random()*3 - 1.5) * 1.5*k/maxFloorTiles);
-    } else {
-      // if path is mutable over races, create smoother tracks
-      last_tile = cw_createFloorTile(tile_position, (Math.random()*3 - 1.5) * 1.2*k/maxFloorTiles);
-    }
+    var angle = (Math.random()*3 - 1.5) * roughness*k/maxFloorTiles;
+
+    // when approaching the upper or lower edge of the minimap (h=35 or -35),
+    // bias the angle by 5% to lean towards h=0, to avoid the terrain going off-screen
+    angle += (tile_position.y/35)/20;
+
+    last_tile = cw_createFloorTile(tile_position, angle);
     cw_floorTiles.push(last_tile);
     last_fixture = last_tile.GetFixtureList();
     last_world_coords = last_tile.GetWorldPoint(last_fixture.GetShape().m_vertices[3]);
@@ -23,6 +28,8 @@ function cw_createFloor() {
 
 
 function cw_createFloorTile(position, angle) {
+  // Cap the angle to +/-(PI/2) to avoid impossible slopes
+  angle = Math.max(Math.min(angle, Math.PI/2), -Math.PI/2);
   body_def = new b2BodyDef();
 
   body_def.position.Set(position.x, position.y);
